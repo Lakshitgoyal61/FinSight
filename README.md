@@ -268,6 +268,11 @@ npm run db:cleanup-tests          # optional: remove accounts created by E2E run
 
 **E2E tests** cover: route protection, login errors, sign-up validation, sign-up → onboarding → starter budgets → logout, demo login, transaction CRUD + search + filters + persistence, budget recalculation through *approaching* and *exceeded*, goal contributions to completion, subscription payment recording and cancellation, cross-user data isolation, CSV import dry-run, and responsive layouts on a Pixel 7 profile (no horizontal overflow on any page, tab bar and slide-over navigation).
 
+### Continuous integration & auto-sync
+
+- **CI** (`.github/workflows/ci.yml`) runs migrations, typecheck, lint, unit tests and a production build on every push to `main`.
+- **Auto-sync:** `scripts/auto-commit.sh` stages, commits and pushes any changes (respecting `.gitignore`, so `.env`, the database and build output are never committed). The author's local Claude Code setup runs it automatically at the end of each session turn; you can also run it manually with `bash scripts/auto-commit.sh`.
+
 ---
 
 ## Screenshots for GitHub

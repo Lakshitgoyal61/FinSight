@@ -11,3 +11,6 @@ playwright-report/
 test-results/
 coverage/
 .DS_Store
+
+# Personal Claude Code settings (auto-sync hook)
+.claude/settings.local.json
