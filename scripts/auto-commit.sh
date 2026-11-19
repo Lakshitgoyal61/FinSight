@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Auto-sync FinSight to GitHub.
-# Run by a Claude Code "Stop" hook at the end of every Claude turn: stages all changes
+# Run automatically after each development session: stages all changes
 # (respecting .gitignore, so .env / the SQLite DB / build output are never committed),
 # commits them, and pushes to origin/main. Safe to run manually too: `bash scripts/auto-commit.sh`.
 

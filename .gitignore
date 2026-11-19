@@ -12,5 +12,5 @@ test-results/
 coverage/
 .DS_Store
 
-# Personal Claude Code settings (auto-sync hook)
+# Personal editor/tool settings (auto-sync hook)
 .claude/settings.local.json
