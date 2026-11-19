@@ -2,7 +2,7 @@
 
 FinSight is a full-stack personal finance management platform for students and young professionals. It turns everyday transactions into clear analytics, realistic budgets, savings goals, subscription tracking and **explainable** financial insights — all computed from the user's own data in a real database.
 
-> Built as an advanced UI/UX + software-engineering project: Next.js App Router, TypeScript, Prisma + SQLite, session auth, Recharts, Framer Motion, Vitest and Playwright.
+> Built an advanced UI/UX + software-engineering project: Next.js App Router, TypeScript, Prisma + SQLite, session auth, Recharts, Framer Motion, Vitest and Playwright.
 
 ---
 
