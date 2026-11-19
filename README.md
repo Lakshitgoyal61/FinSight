@@ -271,7 +271,7 @@ npm run db:cleanup-tests          # optional: remove accounts created by E2E run
 ### Continuous integration & auto-sync
 
 - **CI** (`.github/workflows/ci.yml`) runs migrations, typecheck, lint, unit tests and a production build on every push to `main`.
-- **Auto-sync:** `scripts/auto-commit.sh` stages, commits and pushes any changes (respecting `.gitignore`, so `.env`, the database and build output are never committed). The author's local Claude Code setup runs it automatically at the end of each session turn; you can also run it manually with `bash scripts/auto-commit.sh`.
+- **Auto-sync:** `scripts/auto-commit.sh` stages, commits and pushes any changes (respecting `.gitignore`, so `.env`, the database and build output are never committed). It runs automatically after each development session, or manually with `bash scripts/auto-commit.sh`.
 
 ---
 
