@@ -14,9 +14,7 @@ if ! git diff --cached --quiet; then
   committed=$(git diff --cached --name-only | wc -l | tr -d ' ')
   summary=$(git diff --cached --name-only | head -4 | xargs -I{} basename "{}" | paste -sd ',' - | sed 's/,/, /g')
   [ "$committed" -gt 4 ] && summary="$summary, +$((committed - 4)) more"
-  git commit -q \
-    -m "Update ${committed} file(s): ${summary}" \
-    -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" || exit 0
+  git commit -q -m "Update ${committed} file(s): ${summary}" || exit 0
 fi
 
 # Push new commits, plus any left over from an earlier failed push.
