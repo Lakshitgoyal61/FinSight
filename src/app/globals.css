@@ -1,0 +1,278 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =========================================================================
+   FinSight design tokens
+   - Surfaces: midnight navy (dark) / cool paper (light)
+   - Accents: violet (primary), electric blue, teal
+   - Chart palette: validated categorical set (CVD-safe adjacent pairs) per mode
+   ========================================================================= */
+
+:root {
+  --radius: 0.875rem;
+
+  --background: #f4f6fb;
+  --background-subtle: #eef1f8;
+  --foreground: #0c1226;
+  --card: #ffffff;
+  --card-foreground: #0c1226;
+  --card-elevated: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #0c1226;
+  --muted: #eef1f7;
+  --muted-foreground: #586180;
+  --subtle-foreground: #7a83a1;
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --input: rgba(15, 23, 42, 0.14);
+  --ring: #6d5ce7;
+
+  --primary: #5b4bdb;
+  --primary-foreground: #ffffff;
+  --primary-soft: rgba(91, 75, 219, 0.09);
+  --secondary: #eef0f8;
+  --secondary-foreground: #1b2240;
+  --accent: rgba(91, 75, 219, 0.07);
+  --accent-foreground: #1b2240;
+
+  --blue: #2a78d6;
+  --teal: #0f9a88;
+  --violet: #6d5ce7;
+
+  --success: #127a3a;
+  --success-soft: rgba(18, 122, 58, 0.1);
+  --warning: #a35a00;
+  --warning-soft: rgba(234, 140, 0, 0.12);
+  --danger: #c62f2f;
+  --danger-soft: rgba(198, 47, 47, 0.1);
+
+  /* Charts */
+  --chart-income: #0f9a88;
+  --chart-expense: #7c6cf0;
+  --chart-grid: rgba(15, 23, 42, 0.07);
+  --chart-axis: #7a83a1;
+  --cat-1: #2a78d6;
+  --cat-2: #eb6834;
+  --cat-3: #1baf7a;
+  --cat-4: #eda100;
+  --cat-5: #e87ba4;
+  --cat-6: #008300;
+  --cat-7: #6250d6;
+  --cat-8: #e34948;
+  --cat-other: #8a92a8;
+
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px -6px rgba(15, 23, 42, 0.08);
+  --shadow-pop: 0 12px 40px -12px rgba(15, 23, 42, 0.25);
+  --glass: rgba(255, 255, 255, 0.72);
+  --hero-glow: rgba(109, 92, 231, 0.14);
+}
+
+.dark {
+  --background: #060a18;
+  --background-subtle: #0a1022;
+  --foreground: #e9ecf8;
+  --card: #0d1430;
+  --card-foreground: #e9ecf8;
+  --card-elevated: #121a3a;
+  --popover: #10173a;
+  --popover-foreground: #e9ecf8;
+  --muted: #141c3b;
+  --muted-foreground: #98a1c0;
+  --subtle-foreground: #6f789a;
+  --border: rgba(148, 163, 214, 0.11);
+  --border-strong: rgba(148, 163, 214, 0.2);
+  --input: rgba(148, 163, 214, 0.17);
+  --ring: #8b7cf6;
+
+  --primary: #6c5ce7;
+  --primary-foreground: #ffffff;
+  --primary-soft: rgba(139, 124, 246, 0.14);
+  --secondary: #161f42;
+  --secondary-foreground: #e9ecf8;
+  --accent: rgba(139, 124, 246, 0.1);
+  --accent-foreground: #e9ecf8;
+
+  --blue: #3987e5;
+  --teal: #14a894;
+  --violet: #8b7cf6;
+
+  --success: #3ccf72;
+  --success-soft: rgba(60, 207, 114, 0.12);
+  --warning: #fbbf3c;
+  --warning-soft: rgba(251, 191, 60, 0.12);
+  --danger: #f27474;
+  --danger-soft: rgba(242, 116, 116, 0.12);
+
+  --chart-income: #14a894;
+  --chart-expense: #8b7cf6;
+  --chart-grid: rgba(148, 163, 214, 0.09);
+  --chart-axis: #6f789a;
+  --cat-1: #3987e5;
+  --cat-2: #d95926;
+  --cat-3: #199e70;
+  --cat-4: #c98500;
+  --cat-5: #d55181;
+  --cat-6: #0ca30c;
+  --cat-7: #9085e9;
+  --cat-8: #e66767;
+  --cat-other: #6b7493;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+  --glass: rgba(13, 20, 48, 0.7);
+  --hero-glow: rgba(124, 108, 240, 0.22);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-background-subtle: var(--background-subtle);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-elevated: var(--card-elevated);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-blue: var(--blue);
+  --color-teal: var(--teal);
+  --color-violet: var(--violet);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-income: var(--chart-income);
+  --color-expense: var(--chart-expense);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-xl: var(--radius);
+  --radius-2xl: calc(var(--radius) + 4px);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: clip;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+  /* Grid items default to min-width:auto, which lets long truncated text (e.g. merchant names)
+     stretch a track wider than the screen. Let them shrink so `truncate` works as intended. */
+  .grid > * {
+    min-width: 0;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .surface {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+  }
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--chart-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--chart-grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .brand-gradient {
+    background: linear-gradient(135deg, #7c6cf0 0%, #3987e5 55%, #14a894 100%);
+  }
+  .brand-text {
+    background: linear-gradient(120deg, #a69bff 0%, #6aa8f5 50%, #3fd0bd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  :root:not(.dark) .brand-text {
+    background: linear-gradient(120deg, #5b4bdb 0%, #2a78d6 55%, #0f8a79 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+/* Recharts: keep focus outlines off SVG surfaces (keyboard users get the data table instead) */
+.recharts-wrapper,
+.recharts-surface {
+  outline: none;
+}
+.recharts-wrapper *:focus {
+  outline: none;
+}

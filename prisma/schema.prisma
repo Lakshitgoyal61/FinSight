@@ -1,0 +1,161 @@
+// FinSight database schema
+// Money is stored as INTEGER minor units (paise / cents) to avoid floating point drift.
+// Enum-like columns are Strings (SQLite has no native enums) and are validated with Zod at the API boundary.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  onboarded    Boolean  @default(false)
+  isDemo       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  preference    UserPreference?
+  sessions      Session[]
+  transactions  Transaction[]
+  budgets       Budget[]
+  goals         SavingsGoal[]
+  contributions GoalContribution[]
+  subscriptions Subscription[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  userAgent  String?
+  expiresAt  DateTime
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model UserPreference {
+  id                          String   @id @default(cuid())
+  userId                      String   @unique
+  currency                    String   @default("INR")
+  theme                       String   @default("dark") // dark | light | system
+  monthlyIncome               Int? // minor units, optional
+  budgetingStyle              String   @default("flexible") // 50-30-20 | zero-based | envelope | flexible
+  financialGoals              String   @default("[]") // JSON array of goal keys
+  notifyBudgetAlerts          Boolean  @default(true)
+  notifySubscriptionReminders Boolean  @default(true)
+  notifyGoalMilestones        Boolean  @default(true)
+  notifyWeeklySummary         Boolean  @default(false)
+  reminderDays                Int      @default(3)
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id             String   @id @default(cuid())
+  userId         String
+  title          String
+  amount         Int // minor units, always positive; direction is given by `type`
+  type           String // INCOME | EXPENSE
+  category       String
+  date           DateTime
+  paymentMethod  String   @default("UPI")
+  description    String?
+  subscriptionId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, date])
+  @@index([userId, type, date])
+  @@index([userId, category])
+  @@index([subscriptionId])
+}
+
+model Budget {
+  id             String   @id @default(cuid())
+  userId         String
+  category       String
+  month          String // YYYY-MM
+  limit          Int // minor units
+  alertThreshold Int      @default(80) // percent of limit that triggers "approaching"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category, month])
+  @@index([userId, month])
+}
+
+model SavingsGoal {
+  id           String    @id @default(cuid())
+  userId       String
+  title        String
+  targetAmount Int // minor units
+  targetDate   DateTime?
+  icon         String    @default("target")
+  color        String    @default("violet")
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contributions GoalContribution[]
+
+  @@index([userId])
+}
+
+model GoalContribution {
+  id        String   @id @default(cuid())
+  goalId    String
+  userId    String
+  amount    Int // minor units; negative values represent withdrawals
+  note      String?
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  goal SavingsGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([goalId, date])
+  @@index([userId])
+}
+
+model Subscription {
+  id              String    @id @default(cuid())
+  userId          String
+  name            String
+  amount          Int // minor units per billing cycle
+  billingCycle    String // MONTHLY | YEARLY
+  category        String
+  nextPaymentDate DateTime
+  status          String    @default("ACTIVE") // ACTIVE | CANCELLED
+  paymentMethod   String    @default("Card")
+  notes           String?
+  startDate       DateTime  @default(now())
+  cancelledAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([userId, status])
+  @@index([userId, nextPaymentDate])
+}
